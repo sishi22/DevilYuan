@@ -68,11 +68,11 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "魔元量化"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "蜗牛量化"))
         self.pushButtonSelectStock.setText(_translate("MainWindow", "选股"))
-        self.pushButtonStockTrade.setText(_translate("MainWindow", "股票交易"))
-        self.pushButtonStockData.setText(_translate("MainWindow", "股票数据"))
-        self.pushButtonStockStrategyBackTestinig.setText(_translate("MainWindow", "股票策略回测"))
+        self.pushButtonStockTrade.setText(_translate("MainWindow", "挂机管理"))
+        self.pushButtonStockData.setText(_translate("MainWindow", "数据管理"))
+        self.pushButtonStockStrategyBackTestinig.setText(_translate("MainWindow", "策略回测"))
 
 
 class DyMainWindow(QMainWindow, Ui_MainWindow):
@@ -141,7 +141,7 @@ class DyMainWindow(QMainWindow, Ui_MainWindow):
         # 添加菜单
         menu = menuBar.addMenu('配置')
 
-        action = QAction('股票历史日线数据源...', self)
+        action = QAction('历史日线数据源...', self)
         action.triggered.connect(self._configStockHistDaysDataSource)
         menu.addAction(action)
 
@@ -195,7 +195,7 @@ if __name__ == "__main__":
 
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon('DevilYuan.jpg'))
+    app.setWindowIcon(QtGui.QIcon('SnailPic.png'))
     MainWindow = DyMainWindow()
     MainWindow.show()
 

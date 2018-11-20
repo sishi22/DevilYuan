@@ -19,7 +19,6 @@ from ..DyStockDataCommon import *
 from .DyStockDataWind import *
 from ...Common.DyStockCommon import *
 from .DyStockDataTicksGateway import DyStockDataTicksGateway
-from .DyStockDataTdx import DyStockDataTdx
 
 
 class DyStockDataGateway(object):
@@ -133,7 +132,7 @@ class DyStockDataGateway(object):
 
         # from TuShare
         if 'TuShare' in DyStockCommon.defaultHistDaysDataSource:
-            tuShareCodes = self._getStockCodesFromTdx()
+            tuShareCodes = self._getStockCodesFromTuSharePro()
             codes = tuShareCodes
 
         # verify
@@ -303,26 +302,20 @@ class DyStockDataGateway(object):
         self._info.print("从TuShare获取股票代码表成功")
         return codes
 
-    def _getStockCodesFromTdx(self):
-        self._info.print("开始从TDX获取股票代码表...")
-
-        tdx = DyStockDataTdx(-1, self._info)
-        df = tdx.getStockCodes()
-        tdx.close()
-        if df is None:
-            self._info.print("从TDX获取股票代码表失败", DyLogData.error)
+    def _getStockCodesFromTuSharePro(self):
+        self._info.print("从TuSharePro获取股票代码表...")
+        try:
+            self._startTuSharePro()
+            df = self._tuSharePro.query('stock_basic', exchange='', list_status='L', fields='ts_code,name')
+            data = df[['ts_code', 'name']].values.tolist()
+            codes = {}
+            for code, name in data:
+                codes[code] = name
+            self._info.print("从TuSharePro获取股票代码表成功")
+            return codes
+        except Exception as ex:
+            self._info.print("从TuSharePro获取股票代码表失败", DyLogData.error)
             return None
-
-        codes = {}
-        data = df[['code', 'name']].values.tolist()
-        for code, name in data:
-            if code[0] == '6':
-                codes[code + '.SH'] = name
-            else:
-                codes[code + '.SZ'] = name
-
-        self._info.print("从TDX获取股票代码表成功")
-        return codes
 
     def _getDaysFrom163(self, code, startDate, endDate, retry_count=3, pause=0.001):
         """

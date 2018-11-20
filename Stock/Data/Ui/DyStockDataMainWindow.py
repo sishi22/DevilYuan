@@ -44,7 +44,7 @@ class DyStockDataMainWindow(DyBasicMainWindow):
             self._oneKeyUpdate()
 
     def _initUi(self):
-        self.setWindowTitle('股票数据')
+        self.setWindowTitle('数据管理')
 
         self._initCentral()
         self._initMenu()
